@@ -1,2 +1,24 @@
+<<<<<<< HEAD
 .venv
 .env
+=======
+# Virtual Environment
+venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Temporary files
+uploads/*
+!uploads/.gitkeep
+
+# Large model files
+*.pyd
+*.dll 
+>>>>>>> 36ae77a (Add skin cancer classifier)
