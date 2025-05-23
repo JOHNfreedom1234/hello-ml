@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Skin Cancer Classifier</title>
+    <style>
+        .bg-pastel-purple {
+            background-color: #D8B2FF;
+        }
+
+        .text-pastel-purple {
+            color: #D8B2FF;
+        }
+
+        .bg-mint-green {
+            background-color: #A3F9E1;
+        }
+
+        .text-mint-green {
+            color: #A3F9E1;
+        }
+    </style>
+</head>
+
+<body class="bg-pastel-purple text-gray-800">
+    <div class="container mx-auto p-6">
+        <!-- Header Section -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-semibold text-pastel-purple mb-4">Skin Cancer Classifier</h1>
+            <p class="text-xl text-gray-600">Upload an image of a skin lesion to classify the type of skin cancer and
+                get detailed information.</p>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Upload Form (Left side) -->
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Upload Image</h2>
+                <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                    <div class="flex flex-col">
+                        <label for="image" class="text-gray-700 font-medium">Select an image file:</label>
+                        <input type="file" name="image" id="image"
+                            class="py-2 px-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mint-green"
+                            required>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-mint-green text-white font-semibold py-3 rounded-lg hover:bg-mint-green transition duration-300">Analyze</button>
+                </form>
+            </div>
+
+            <!-- Uploaded Image Preview (Right side) -->
+            {% if image_url %}
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Uploaded Image</h2>
+                <div class="border-2 border-gray-200 rounded-lg p-4">
+                    <img src="{{ image_url }}" alt="Uploaded Image" class="max-w-full h-auto rounded-lg shadow-md">
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+<!-- Analysis Results -->
+{% if result %}
+<div class="bg-white shadow-md rounded p-6 mt-6 col-span-2">
+    <h2 class="text-3xl font-bold mb-4 text-center">Analysis Results</h2>
+    <p><strong>Classified Type:</strong> {{ result.label }}</p>
+    <p><strong>Confidence Score:</strong> {{ result.confidence }}</p>
+
+    <div class="mt-4">
+        <h3 class="text-xl font-bold mb-2">Details:</h3>
+
+        <!-- Description -->
+        <p><strong>Description:</strong> {{ result.details.description }}</p>
+
+        <!-- Causes -->
+        <p><strong>Causes:</strong></p>
+        <ul class="list-disc ml-6">
+            {% for cause in result.details.causes %}
+            <li>{{ cause }}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Risk Factors -->
+        <p><strong>Risk Factors:</strong></p>
+        <ul class="list-disc ml-6">
+            {% for risk in result.details.risk_factors %}
+            <li>{{ risk }}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Prognosis -->
+        <p><strong>Prognosis:</strong> {{ result.details.prognosis }}</p>
+
+        <!-- Treatments -->
+        <p><strong>Treatments:</strong></p>
+        <ul class="list-disc ml-6">
+            {% for treatment in result.details.treatments %}
+            <li>{{ treatment }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% else %}
+<p>No results available.</p>
+{% endif %}
+
+    </div>
+</body>
+
+</html>

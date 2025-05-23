@@ -1,0 +1,30 @@
+[
+  {
+    "label": "akiec",
+    "name": "Actinic Keratoses and Intraepithelial Carcinomae"
+  },
+  {
+    "label": "bcc",
+    "name": "Basal Cell Carcinoma"
+  },
+  {
+    "label": "bkl",
+    "name": "Benign Keratosis"
+  },
+  {
+    "label": "df",
+    "name": "Dermatofibroma"
+  },
+  {
+    "label": "mel",
+    "name": "Melanoma"
+  },
+  {
+    "label": "nv",
+    "name": "Melanocytic Nevi"
+  },
+  {
+    "label": "vasc",
+    "name": "Vascular Skin Lesions"
+  }
+]
