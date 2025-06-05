@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Diagnosis Result</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+  body {
+    background-color: #EAEFEF;
+    padding-top: 40px;
+    color: #333446;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .preview-img {
+    display: block;       
+    margin-left: auto;
+    margin-right: auto;  
+    max-width: 300px;
+    height: auto;
+    border-radius: 10px;
+    border: 3px solid #B8CFCE;
+  }
+  .back-button {
+    font-size: 1rem;
+    color: #7F8CAA;
+    text-decoration: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0;
+    transition: color 0.2s ease-in-out;
+    margin-left: 50px;
+  }
+  .back-button:hover {
+    color: #5f6b8a; 
+    text-decoration: none;
+  }
+  .back-button svg {
+    width: 1.2em;
+    height: 1.2em;
+    fill: currentColor;
+  }
+</style>
+
+</head>
+<body>
+
+<a href="{{ url_for('upload') }}" class="back-button" aria-label="Back to upload">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" >
+    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H3.707l4.147 4.146a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 1 1 .708.708L3.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
+  </svg>
+  Back
+</a>
+
+<div class="container text-center">
+  <h1 class="mb-4">Diagnosis Result</h1>
+<img src="{{ image_url }}" class="preview-img my-3" alt="Uploaded Image" />
+  <div class="card shadow p-3">
+    <h4 class="text-danger">Detected: {{ disease_name }}</h4>
+    <p>{{ description }}</p>
+  </div>
+</div>
+
+</body>
+</html>
