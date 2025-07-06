@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoogle: Skin Cancer Classifier</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+        .header {
+            text-align: center;
+            color: #1a73e8;
+            margin: 2rem 0;
+            font-size: 2.5rem;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .upload-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .results-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        #imagePreview {
+            max-width: 100%;
+            height: auto;
+            margin-top: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+        .result-item {
+            margin: 1.5rem 0;
+        }
+        .advice-box {
+            background: #e8f0fe;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+        input[type="file"] {
+            margin: 1rem 0;
+            padding: 0.5rem;
+            border: 2px dashed #1a73e8;
+            border-radius: 5px;
+            width: 100%;
+        }
+        .loading {
+            display: none;
+            color: #1a73e8;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="header">Zoogle Skin Cancer Classifier</h1>
+    
+    <div class="container">
+        <div class="upload-box">
+            <input type="file" id="imageInput" accept="image/*">
+            <img id="imagePreview" alt="Upload Preview">
+            <div class="loading" id="loading">Analyzing...</div>
+        </div>
+        
+        <div class="results-box">
+            <div id="results" style="display: none;">
+                <div class="result-item">
+                    <h3>Diagnosis:</h3>
+                    <p id="diagnosisResult"></p>
+                </div>
+                <div class="advice-box">
+                    <h3>AI Doctor's Advice:</h3>
+                    <p id="aiAdvice"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const resultsDiv = document.getElementById('results');
+        const diagnosisPara = document.getElementById('diagnosisResult');
+        const advicePara = document.getElementById('aiAdvice');
+        const loadingDiv = document.getElementById('loading');
+
+        imageInput.addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+
+            // Show loading
+            resultsDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Server error');
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                // Update results
+                diagnosisPara.textContent = data.diagnosis;
+                advicePara.textContent = data.advice;
+                resultsDiv.style.display = 'block';
+                
+                // Update image preview with server path
+                imagePreview.src = data.image_url;
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error processing image');
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
