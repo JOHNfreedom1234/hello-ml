@@ -1,7 +1,7 @@
-gunicorn
-flask
+Flask 
 tensorflow
-pillow
+gunicorn
 numpy
 google-generativeai
 python-dotenv
+Pillow
