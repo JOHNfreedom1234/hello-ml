@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Cancer Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="brand">DermaScan</div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+        </div>
+    </div>
+    <div class="content">
+        <h1>
+            <span class="black-text">Automatic</span> 
+            <span class="blue-text">Skin Cancer</span><br>
+            <span class="black-text">Classifier</span>
+        </h1>
+        <div class="upload-box" id="upload-box">
+            <label for="file-upload" style="cursor: pointer;">
+                <img src="{{ url_for('static', filename='assets/upload_button.apng') }}" 
+                     alt="Example Animation" 
+                     style="width: 15%; height: auto; border-radius: 10px; margin-bottom: 15px;">
+            </label>
+            <form id="upload-form" enctype="multipart/form-data">
+                <label for="file-upload" style="margin-top: 10px; display: block;">Upload an image of your <br>skin</br></label>
+                <input id="file-upload" type="file" name="file" accept="image/*" required>
+            </form>
+        </div>
+
+        <!-- Example images section -->
+        <p style="color: gray; font-size: 0.7em; text-align: center; margin-bottom: 4px;">
+            ↓ Or try these example skin images
+        </p>
+        <div class="example-images">
+            <div class="example-box">
+                <img src="{{ url_for('static', filename='assets/skin_cancer_3.jpg') }}" alt="Example 1">
+            </div>
+            <div class="example-box">
+                <img src="{{ url_for('static', filename='assets/skin_cancer_4.jpg') }}" alt="Example 2">
+            </div>
+            <div class="example-box">
+                <img src="{{ url_for('static', filename='assets/skin_cancer_sample.jpeg') }}" alt="Example 3">
+            </div>
+            <div class="example-box">
+                <img src="{{ url_for('static', filename='assets/skin_cancer_sample2.jpg') }}" alt="Example 4">
+            </div>
+        </div>
+
+        <!-- Move the upload button under the example images -->
+        <div style="text-align: center; margin-top: 15px;">
+            <button id="upload-button" type="submit" form="upload-form" class="upload-button">
+                <span id="button-text">Upload</span>
+                <div id="spinner" class="spinner"></div>
+            </button>
+        </div>
+
+        <div id="results-section">
+            <h2>Results</h2>
+            <p id="predicted-name"></p>
+            <p id="disease-info"></p>
+        </div>
+    </div>
+    
+    <!-- Modal for displaying results -->
+    <div id="results-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="modal-columns">
+                <!-- Left Column -->
+                <div class="modal-left">
+                    <h2>Predicted Results</h2>
+                    <img id="modal-uploaded-image" src="" alt="Uploaded Image" style="width: 150px; height: 100px; border-radius: 5px; margin-bottom: 15px;">
+                </div>
+                <!-- Right Column -->
+                <div class="modal-right">
+                    <p id="modal-predicted-label"><strong>Predicted Label:</strong> <span></span></p>
+                    <p id="modal-predicted-name"><strong>Predicted Name:</strong> <span></span></p>
+                    <p id="modal-disease-info"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
