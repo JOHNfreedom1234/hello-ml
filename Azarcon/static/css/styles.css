@@ -1,0 +1,286 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    color: #056cfc;
+    margin: 0;
+    padding: 0;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Keep items on opposite ends */
+    align-items: center;
+    background-color: white;
+    color: #056cfc;
+    padding: 15px 40px; /* Add horizontal padding to move items inward */
+    margin-top: 12px; /* Add top margin */
+}
+.navbar .brand {
+    font-size: 1.8em;
+    font-weight: bold;
+}
+.navbar .brand span {
+    font-weight: normal; /* 'Scan' is not bold */
+    font-size: 0.6em;
+}
+.navbar .nav-links a {
+    color: #056cfc;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+.navbar .nav-links a:hover {
+    text-decoration: underline;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align content towards the top */
+    align-items: center;
+    height: 80vh; /* Reduce the height to move content upwards */
+    text-align: center;
+    margin-top: 20px; /* Add some margin at the top */
+}
+.upload-box {
+    background-color: rgba(123, 137, 155, 0.1);
+    border-radius: 10px;
+    width: 200px;
+    min-height: 110px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 10px; /* Reduce the margin to move it closer to the title */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    background-size: cover; /* Ensure the image covers the box */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent image repetition */
+}
+.upload-box label {
+    display: block;
+    font-size: 0.9em;
+    color: #252729;
+    cursor: pointer;
+    transition: color 0.3s ease; /* Smooth transition for text color */
+}
+.upload-box input[type="file"] {
+    display: none;
+}
+.upload-box input[type="submit"] {
+    background-color: #056cfc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+.upload-box input[type="submit"]:hover {
+    background-color: #0458d1;
+}
+/* Hover effect for the upload box */
+.upload-box:hover {
+    background-color: rgba(3, 1, 18, 0.6); /* Darker background */
+}
+.upload-box:hover label {
+    color: #f0f0f0; /* Lighter text color */
+}
+/* Hover effect for the .apng image */
+.upload-box:hover img {
+    filter: brightness(1.8); /* Make the image brighter */
+    transition: filter 0.3s ease; /* Smooth transition for brightness */
+}
+.upload-box img,
+.upload-box label {
+    position: relative; /* Ensure they stay in place initially */
+    z-index: 1; /* Keep them above the background initially */
+}
+.upload-box.filled img,
+.upload-box.filled label {
+    display: none; /* Hide the initial content when an image is uploaded */
+}
+#results-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(240, 240, 240, 0.8);
+    border-radius: 10px;
+    display: none;
+}
+#results-section h2 {
+    margin-bottom: 10px;
+}
+#results-section p {
+    margin: 5px 0;
+}
+.blue-text {
+    color: #056cfc; /* Blue color for "Skin Cancer" */
+}
+.black-text {
+    color: black; /* Black color for "Automatic" and "Classifier" */
+}
+.content h1 {
+    font-size: 1.2em; /* Reduced font size */
+    line-height: 1.4; /* Adjust line height for better spacing */
+    text-align: center; /* Center-align the text */
+}
+.example-images {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Space between the boxes */
+    margin-top: 20px; /* Space above the example images */
+}
+.example-box {
+    width: 60px; /* Set the width of each box */
+    height: 60px; /* Set the height of each box */
+    border: 1px solid #ddd; /* Add a border around each box */
+    border-radius: 5px; /* Rounded corners */
+    overflow: hidden; /* Ensure the image fits within the box */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9; /* Light background color */
+    transition: transform 0.3s ease, filter 0.3s ease; /* Smooth transition for hover effects */
+}
+.example-box img {
+    width: 100%; /* Make the image fit the box */
+    height: 100%; /* Maintain the aspect ratio */
+    object-fit: cover; /* Ensure the image covers the box */
+    transition: transform 0.3s ease, filter 0.3s ease; /* Smooth transition for hover effects */
+}
+/* Hover effect for example images */
+.example-box:hover {
+    transform: scale(1.1); /* Slightly enlarge the box */
+    filter: brightness(0.8); /* Darken the image */
+}
+/* Add this CSS rule for the hover effect on the upload-box with a background image */
+.upload-box.filled:hover {
+    filter: brightness(0.7); /* Darken the background image */
+    transition: filter 0.3s ease; /* Smooth transition for the darkening effect */
+}
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+.upload-button {
+    background-color: #056cfc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    width: 120px; /* Set a fixed width for the button */
+    height: 40px; /* Set a fixed height for the button */
+    text-align: center;
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+}
+
+.upload-button span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    display: none; /* Hide spinner by default */
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 24px; /* Smaller close button font size */
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* Two-column layout for the modal */
+.modal-columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.modal-left {
+    flex: 1;
+    text-align: center;
+}
+
+.modal-right {
+    flex: 2;
+    text-align: left;
+}
+
+.modal-right p {
+    margin: 10px 0;
+    font-size: 0.9em; /* Smaller font size for modal text */
+}
+
+#modal-uploaded-image {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: 150px; /* Make the image more rectangular */
+    height: 100px; /* Adjust height for rectangular shape */
+    border-radius: 5px; /* Slightly rounded corners */
+}
