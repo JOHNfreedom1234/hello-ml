@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Skin Cancer Classifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-box {
+            border: 2px dashed #ccc;
+            padding: 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .upload-box:hover {
+            background: #f9f9f9;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .loading {
+            display: none;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .predicted-label {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .details {
+            margin-top: 10px;
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Skin Cancer Classifier</h1>
+        <form id="uploadForm">
+            <label for="file-upload" class="upload-box" id="upload-label">
+                Click or drag an image here to upload
+            </label>
+            <input id="file-upload" type="file" name="file" accept="image/*">
+            <img id="preview" class="image-preview" src="#" alt="Image Preview"/>
+            <div class="loading" id="loading">Analyzing image...</div>
+        </form>
+        <div class="result" id="result" style="display: none;">
+            <div class="predicted-label" id="predictedLabel"></div>
+            <div class="details" id="details"></div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-upload');
+        const preview = document.getElementById('preview');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('result');
+        const predictedLabel = document.getElementById('predictedLabel');
+        const details = document.getElementById('details');
+        const uploadLabel = document.getElementById('upload-label');
+
+        // Drag & drop functionality
+        uploadLabel.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadLabel.style.background = '#eee';
+        });
+
+        uploadLabel.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadLabel.style.background = '';
+        });
+
+        uploadLabel.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadLabel.style.background = '';
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleUpload();
+            }
+        });
+
+        uploadLabel.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', handleUpload);
+
+        function handleUpload() {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            fetch("/upload", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                loading.style.display = 'none';
+                result.style.display = 'block';
+                predictedLabel.textContent = `Prediction: ${data.predicted_class}`;
+                details.textContent = data.details;
+            })
+            .catch(err => {
+                loading.textContent = "An error occurred during upload.";
+                console.error(err);
+            });
+        }
+    </script>
+</body>
+</html>

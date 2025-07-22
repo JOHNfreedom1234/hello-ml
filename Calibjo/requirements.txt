@@ -1,0 +1,8 @@
+flask
+numpy
+werkzeug
+tensorflow
+pillow
+dotenv
+google-genai
+gunicorn
