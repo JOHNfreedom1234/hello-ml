@@ -1,7 +1,6 @@
 import json
 import os
 import logging
-
 import numpy as np
 import tensorflow as tf
 from PIL import Image, UnidentifiedImageError
@@ -10,11 +9,17 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from google import genai
 
-# Load environment variables
-load_dotenv('.env')
-api_key = os.environ.get('GENAI_API_KEY')
 
-# Configure logging
+load_dotenv('.env')
+api_key = os.getenv('GENAI_API_KEY')
+print(api_key)
+try: 
+    if not api_key:
+        raise ValueError("Missing GENAI_API_KEY in .env file")
+except ValueError as e:
+    logging.error(f"Environment variable error: {e}")
+    raise
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 log = logging.getLogger(__name__)
 
@@ -57,13 +62,12 @@ def load_labels():
         return []
     
 def preprocessing(image_path):
-    """Preprocess the input image for model inference."""
     try:
        with Image.open(image_path) as img:
            img = img.convert("RGB")
            img = img.resize((224, 224))
-           img_array = np.array(img) / 255.0  # Normalize to [0, 1] range
-           img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
+           img_array = np.array(img) / 255.0 
+           img_array = np.expand_dims(img_array, axis=0)
            return img_array
     except UnidentifiedImageError:
         log.error("Unidentified image error")
@@ -76,7 +80,7 @@ def cancer(disease_name):
     """Uses Gemini to provide information about the skin cancer"""
     try:
         response = client.models.generate_content(
-            model="gemini-2.0-pro",
+            model="gemini-2.5-flash",
             prompt=f"Provide information about {disease_name} skin cancer.",
             max_output_tokens=750
         )
@@ -87,12 +91,10 @@ def cancer(disease_name):
 
 @app.route('/', methods=['GET'])
 def home():
-    """home page render"""
     return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    """Handles image upload and prediction."""
     log.info("Received upload request")
 
     if 'file' not in request.files:
